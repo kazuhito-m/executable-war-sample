@@ -4,7 +4,17 @@ apply plugin: 'war'
 group = 'com.github.kazuhito_m'
 version = '1'
 
-description = """executable-war-sample"""
+description = 'executable-war-sample'
+
+war {
+    archiveName 'executable-war-sample.jar'
+    from "$buildDir/classes/main"
+    manifest {
+        attributes(
+                "Main-Class": "com.github.kazuhito_m.TomcatLauncher",
+        )
+    }
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -12,6 +22,13 @@ targetCompatibility = 1.8
 repositories {
     jcenter()
 }
+
+ext {
+    tomcatVersion = '8.5.23'
+}
+
 dependencies {
-    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
+    compile "org.apache.tomcat:tomcat-catalina:$tomcatVersion"
+    compile "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-jasper:$tomcatVersion"
 }
