@@ -7,14 +7,28 @@ version = '1'
 description = 'executable-war-sample'
 
 war {
-    archiveName 'executable-war-sample.jar'
     from "$buildDir/classes/main"
+    from "$buildDir/resources/main"
+    from "$buildDir/unpack-dependencies"
+    classpath = classpath.filter {
+        !it.name.startsWith('tomcat-embed-') && !it.name.startsWith('ecj-')
+    }
     manifest {
         attributes(
                 "Main-Class": "com.github.kazuhito_m.TomcatLauncher",
         )
     }
 }
+
+task unpackingTomcatJars(type: Copy) {
+    from {
+        configurations.compile.collect {
+            zipTree(it)
+        }
+    }
+    into "$buildDir/unpack-dependencies"
+}
+war.dependsOn unpackingTomcatJars
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -23,12 +37,10 @@ repositories {
     jcenter()
 }
 
-ext {
-    tomcatVersion = '8.5.23'
-}
 
 dependencies {
-    compile "org.apache.tomcat:tomcat-catalina:$tomcatVersion"
-    compile "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion"
-    compile "org.apache.tomcat:tomcat-jasper:$tomcatVersion"
+    def tomcatVersion = '7.0.39'
+    compile "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}"
+    compile "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    compile "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
 }
