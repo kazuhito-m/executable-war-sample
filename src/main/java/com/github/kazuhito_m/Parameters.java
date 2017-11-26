@@ -3,6 +3,7 @@ package com.github.kazuhito_m;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 class Parameters {
 
@@ -21,11 +22,10 @@ class Parameters {
 
     private Optional<String> findParameterValue(String... option) {
         List<String> optionPatterns = Arrays.asList(option);
-        for (int i = 0; i < consoleArguments.length - 1; i++) {
-            if (optionPatterns.contains(consoleArguments[i]))
-                return Optional.of(consoleArguments[i + 1]);
-        }
-        return Optional.empty();
+        return IntStream.range(0, consoleArguments.length - 1)
+                .filter(i -> optionPatterns.contains(consoleArguments[i]))
+                .mapToObj(i -> consoleArguments[i + 1])
+                .findFirst();
     }
 
     final String[] consoleArguments;
