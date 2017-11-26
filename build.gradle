@@ -10,6 +10,11 @@ war {
     from "$buildDir/classes/main"
     from "$buildDir/resources/main"
     from "$buildDir/unpack-dependencies"
+    from {
+        configurations.compile.collect {
+            zipTree(it)
+        }
+    }
     classpath = classpath.filter {
         !it.name.startsWith('tomcat-embed-') && !it.name.startsWith('ecj-')
     }
@@ -19,16 +24,6 @@ war {
         )
     }
 }
-
-task unpackingTomcatJars(type: Copy) {
-    from {
-        configurations.compile.collect {
-            zipTree(it)
-        }
-    }
-    into "$buildDir/unpack-dependencies"
-}
-war.dependsOn unpackingTomcatJars
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
