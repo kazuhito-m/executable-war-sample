@@ -39,7 +39,7 @@ repositories {
 
 
 dependencies {
-    def tomcatVersion = '7.0.39'
+    def tomcatVersion = '7.0.47' // 7.0.47 以降は「ExpandWar.java のWar展開でエラーが出る」が、起動自体は成功する。
     compile "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}"
     compile "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
     compile "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
