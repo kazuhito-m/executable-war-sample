@@ -50,7 +50,7 @@ public class ParametersTest {
     @DisplayName("最後がオプション指定で値自体は指定してなくても無効化されるだけで例外にならない。")
     public void nonThrowExceptionWhenlastParameterIsOption() {
         Parameters sut = new Parameters(new String[]{"-p", "1234", "--ContextRoot"});
-        assertEquals(sut.port(), 1234, "例外ｓにならない。");
+        assertEquals(sut.port(), 1234, "例外にならない。");
     }
 
 }
