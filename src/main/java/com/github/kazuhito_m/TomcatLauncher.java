@@ -20,7 +20,7 @@ public class TomcatLauncher {
 
         Tomcat tomcat = new Tomcat();
 
-        tomcat.addWebapp("", thisWarPath.toString());
+        tomcat.addWebapp(analyzeContextPath(args), thisWarPath.toString());
 
         Path createTempPath = Files.createTempFile(null, ".war");
         Files.copy(TomcatLauncher.class.getResourceAsStream("sample.war"), createTempPath, StandardCopyOption.REPLACE_EXISTING);
@@ -58,6 +58,11 @@ public class TomcatLauncher {
                 }
             }
         }
+    }
+
+    private static String analyzeContextPath(String[] args) {
+        if (args.length == 0) return "";
+        return "/" + args[0].replaceAll("^\\/*", "");
     }
 
 }
