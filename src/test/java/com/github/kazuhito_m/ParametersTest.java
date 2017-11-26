@@ -1,6 +1,5 @@
 package com.github.kazuhito_m;
 
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

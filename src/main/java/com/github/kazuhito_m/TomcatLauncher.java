@@ -2,16 +2,14 @@ package com.github.kazuhito_m;
 
 import org.apache.catalina.startup.Tomcat;
 
-import java.io.FileInputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.jar.JarInputStream;
-import java.util.zip.ZipEntry;
 
 public class TomcatLauncher {
+
     public static void main(String[] args) throws Exception {
         Parameters parameters = new Parameters(args);
 
@@ -28,29 +26,11 @@ public class TomcatLauncher {
         tomcat.addWebapp("/innerWar", createTempPath.toString());
 
         Path jerUnpackDir = thisWarPath.getParent().resolve("unpack");
-        decompressJar(thisWarPath, jerUnpackDir);
+        new JarExpander(thisWarPath).expand(jerUnpackDir);
         tomcat.addWebapp("/unpackSelfWar", createTempPath.toString());
 
         tomcat.start();
         tomcat.getServer().await();
-    }
-
-    protected static void decompressJar(Path inputFile, Path outputDir) throws Exception {
-        try (FileInputStream fis = new FileInputStream(inputFile.toFile());
-             JarInputStream archive = new JarInputStream(fis)) {
-            if (!Files.exists(outputDir)) Files.createDirectory(outputDir);
-            ZipEntry entry = null;
-            while ((entry = archive.getNextEntry()) != null) {
-                Path targetPath = outputDir.resolve(entry.getName());
-                if (entry.isDirectory()) {
-                    Files.createDirectory(targetPath);
-                    continue;
-                }
-                Path parentPath = targetPath.getParent();
-                if (Files.notExists(parentPath)) Files.createDirectory(parentPath);
-                Files.copy(archive, targetPath, StandardCopyOption.REPLACE_EXISTING);
-            }
-        }
     }
 
 }
