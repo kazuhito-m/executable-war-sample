@@ -22,8 +22,8 @@ class Parameters {
     private Optional<String> findParameterValue(String... option) {
         List<String> optionPatterns = Arrays.asList(option);
         for (int i = 0; i < consoleArguments.length - 1; i++) {
-            String parameter = consoleArguments[i];
-            if (optionPatterns.contains(parameter)) return Optional.of(consoleArguments[i + 1]);
+            if (optionPatterns.contains(consoleArguments[i]))
+                return Optional.of(consoleArguments[i + 1]);
         }
         return Optional.empty();
     }
