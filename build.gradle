@@ -1,10 +1,20 @@
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'org.junit.platform.gradle.plugin'
 
 group = 'com.github.kazuhito_m'
 version = '1'
 
 description = 'executable-war-sample'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.2'
+    }
+}
 
 war {
     from "$buildDir/classes/main"
@@ -38,4 +48,7 @@ dependencies {
     compile "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}"
     compile "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
     compile "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.2'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.0.2'
 }
