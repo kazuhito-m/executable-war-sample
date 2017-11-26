@@ -35,9 +35,6 @@ public class TomcatLauncher {
         tomcat.getServer().await();
     }
 
-    /**
-     * jar解凍
-     */
     protected static void decompressJar(Path inputFile, Path outputDir) throws Exception {
         try (FileInputStream fis = new FileInputStream(inputFile.toFile());
              JarInputStream archive = new JarInputStream(fis)) {
