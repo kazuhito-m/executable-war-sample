@@ -19,7 +19,6 @@ buildscript {
 war {
     from "$buildDir/classes/main"
     from "$buildDir/resources/main"
-    from "$buildDir/unpack-dependencies"
     from {
         configurations.compile.collect {
             zipTree(it)
