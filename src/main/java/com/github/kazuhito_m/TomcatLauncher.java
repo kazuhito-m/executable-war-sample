@@ -48,7 +48,7 @@ public class TomcatLauncher {
                 }
                 Path parentPath = targetPath.getParent();
                 if (Files.notExists(parentPath)) Files.createDirectory(parentPath);
-                if (Files.notExists(targetPath)) Files.copy(archive, targetPath);
+                Files.copy(archive, targetPath, StandardCopyOption.REPLACE_EXISTING);
             }
         }
     }
