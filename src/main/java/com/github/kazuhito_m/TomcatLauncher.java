@@ -13,12 +13,15 @@ import java.util.zip.ZipEntry;
 
 public class TomcatLauncher {
     public static void main(String[] args) throws Exception {
+        Parameters parameters = new Parameters(args);
+
         URL warLocation = TomcatLauncher.class.getProtectionDomain().getCodeSource().getLocation();
         Path thisWarPath = Paths.get(warLocation.toURI());
 
         Tomcat tomcat = new Tomcat();
+        tomcat.setPort(parameters.port());
 
-        tomcat.addWebapp(analyzeContextPath(args), thisWarPath.toString());
+        tomcat.addWebapp(parameters.contextRoot(), thisWarPath.toString());
 
         Path createTempPath = Files.createTempFile(null, ".war");
         Files.copy(TomcatLauncher.class.getResourceAsStream("sample.war"), createTempPath, StandardCopyOption.REPLACE_EXISTING);
@@ -51,11 +54,6 @@ public class TomcatLauncher {
                 Files.copy(archive, targetPath, StandardCopyOption.REPLACE_EXISTING);
             }
         }
-    }
-
-    private static String analyzeContextPath(String[] args) {
-        if (args.length == 0) return "";
-        return "/" + args[0].replaceAll("^\\/*", "");
     }
 
 }
