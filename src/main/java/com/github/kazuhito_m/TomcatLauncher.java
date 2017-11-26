@@ -2,9 +2,7 @@ package com.github.kazuhito_m;
 
 import org.apache.catalina.startup.Tomcat;
 
-import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,12 +48,7 @@ public class TomcatLauncher {
                 }
                 Path parentPath = targetPath.getParent();
                 if (Files.notExists(parentPath)) Files.createDirectory(parentPath);
-                try (FileOutputStream fos = new FileOutputStream(targetPath.toFile());
-                     BufferedOutputStream bos = new BufferedOutputStream(fos)) {
-                    int size = 0;
-                    byte[] buf = new byte[1024];
-                    while ((size = archive.read(buf)) > 0) bos.write(buf, 0, size);
-                }
+                Files.copy(archive, targetPath);
             }
         }
     }
